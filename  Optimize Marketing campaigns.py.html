@@ -1,0 +1,125 @@
+<html>
+<head>
+<title>Optimize Marketing campaigns.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #7a7e85;}
+.s5 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Optimize Marketing campaigns.py</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">pandas </span><span class="s0">as </span><span class="s1">pd</span>
+
+
+<span class="s1">data</span><span class="s2">=</span><span class="s1">pd</span><span class="s2">.</span><span class="s1">read_csv</span><span class="s2">(</span><span class="s3">'/Users/felisamoses/Documents/Campaign-Data.csv'</span><span class="s2">)</span>
+<span class="s1">pd</span><span class="s2">.</span><span class="s1">set_option</span><span class="s2">(</span><span class="s3">'display.max_columns'</span><span class="s2">,</span><span class="s0">None</span><span class="s2">)</span>
+<span class="s4">#pd.set_option('display.max_rows',None)</span>
+<span class="s1">print</span><span class="s2">(</span><span class="s1">data</span><span class="s2">)</span>
+<span class="s1">print</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s3">'Client Type'</span><span class="s2">].</span><span class="s1">value_counts</span><span class="s2">(</span><span class="s1">normalize</span><span class="s2">=</span><span class="s0">True</span><span class="s2">))</span>
+<span class="s1">print</span><span class="s2">(</span><span class="s3">&quot;These percentages indicates that large facility make up nearly half of the client base, While private facilities &quot;</span>
+      <span class="s3">&quot;have the smallest share. This breakdown could be helpful in identifying where to focus our resources.&quot;</span><span class="s2">)</span>
+
+<span class="s1">print</span><span class="s2">(</span><span class="s1">pd</span><span class="s2">.</span><span class="s1">crosstab</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s3">'Number of Competition'</span><span class="s2">],</span><span class="s1">data</span><span class="s2">[</span><span class="s3">'Client Type'</span><span class="s2">],</span><span class="s1">margins</span><span class="s2">=</span><span class="s0">True</span><span class="s2">,</span><span class="s1">normalize</span><span class="s2">=</span><span class="s3">'columns'</span><span class="s2">))</span>
+<span class="s4">#print(data.dtypes)</span>
+<span class="s1">print</span><span class="s2">(</span><span class="s3">'This suggests that most facilities, regardless of type, are in environments with low competition,'</span>
+      <span class="s3">'while a smaller portion faces high competition.'</span><span class="s2">)</span>
+
+<span class="s0">import </span><span class="s1">seaborn </span><span class="s0">as </span><span class="s1">sns</span>
+<span class="s0">import </span><span class="s1">pandas </span><span class="s0">as </span><span class="s1">pd</span>
+<span class="s0">import </span><span class="s1">matplotlib</span><span class="s2">.</span><span class="s1">pyplot </span><span class="s0">as </span><span class="s1">plt</span>
+
+<span class="s4"># Define a light green color map for the background gradient</span>
+<span class="s1">cm </span><span class="s2">= </span><span class="s1">sns</span><span class="s2">.</span><span class="s1">light_palette</span><span class="s2">(</span><span class="s3">&quot;green&quot;</span><span class="s2">, </span><span class="s1">as_cmap</span><span class="s2">=</span><span class="s0">True</span><span class="s2">)</span>
+
+<span class="s4"># List of columns for correlation calculation</span>
+<span class="s1">columns_for_correlation </span><span class="s2">= [</span>
+    <span class="s3">'Amount Collected'</span><span class="s2">, </span><span class="s3">'Campaign (Email)'</span><span class="s2">, </span><span class="s3">'Campaign (Flyer)'</span><span class="s2">, </span><span class="s3">'Campaign (Phone)'</span><span class="s2">,</span>
+    <span class="s3">'Sales Contact 1'</span><span class="s2">, </span><span class="s3">'Sales Contact 2'</span><span class="s2">, </span><span class="s3">'Sales Contact 3'</span><span class="s2">, </span><span class="s3">'Sales Contact 4'</span><span class="s2">, </span><span class="s3">'Sales Contact 5'</span>
+<span class="s2">]</span>
+
+<span class="s4"># Compute correlations by 'Client Type' for the specified columns</span>
+<span class="s1">correlation_analysis </span><span class="s2">= </span><span class="s1">pd</span><span class="s2">.</span><span class="s1">DataFrame</span><span class="s2">(</span>
+    <span class="s1">data</span><span class="s2">.</span><span class="s1">groupby</span><span class="s2">(</span><span class="s3">'Client Type'</span><span class="s2">)[</span><span class="s1">columns_for_correlation</span><span class="s2">].</span><span class="s1">corr</span><span class="s2">()[</span><span class="s3">'Amount Collected'</span><span class="s2">]</span>
+<span class="s2">).</span><span class="s1">reset_index</span><span class="s2">()</span>
+
+<span class="s4"># Rename columns</span>
+<span class="s1">correlation_analysis</span><span class="s2">.</span><span class="s1">columns </span><span class="s2">= [</span><span class="s3">'Acc Type'</span><span class="s2">, </span><span class="s3">'Variable Impact on Sales'</span><span class="s2">, </span><span class="s3">'Impact'</span><span class="s2">]</span>
+
+<span class="s4"># Filter out rows where the 'Variable Impact on Sales' is 'Amount Collected'</span>
+<span class="s1">correlation_analysis </span><span class="s2">= </span><span class="s1">correlation_analysis</span><span class="s2">[</span><span class="s1">correlation_analysis</span><span class="s2">[</span><span class="s3">'Variable Impact on Sales'</span><span class="s2">] != </span><span class="s3">'Amount Collected'</span><span class="s2">]</span>
+
+<span class="s4"># Pivot the table for heatmap plotting</span>
+<span class="s1">heatmap_data </span><span class="s2">= </span><span class="s1">correlation_analysis</span><span class="s2">.</span><span class="s1">pivot</span><span class="s2">(</span><span class="s1">index</span><span class="s2">=</span><span class="s3">&quot;Acc Type&quot;</span><span class="s2">, </span><span class="s1">columns</span><span class="s2">=</span><span class="s3">&quot;Variable Impact on Sales&quot;</span><span class="s2">, </span><span class="s1">values</span><span class="s2">=</span><span class="s3">&quot;Impact&quot;</span><span class="s2">)</span>
+
+<span class="s4"># Plot the heatmap</span>
+<span class="s1">plt</span><span class="s2">.</span><span class="s1">figure</span><span class="s2">(</span><span class="s1">figsize</span><span class="s2">=(</span><span class="s5">10</span><span class="s2">, </span><span class="s5">8</span><span class="s2">))</span>
+<span class="s1">sns</span><span class="s2">.</span><span class="s1">heatmap</span><span class="s2">(</span><span class="s1">heatmap_data</span><span class="s2">, </span><span class="s1">annot</span><span class="s2">=</span><span class="s0">True</span><span class="s2">, </span><span class="s1">cmap</span><span class="s2">=</span><span class="s3">&quot;YlGnBu&quot;</span><span class="s2">, </span><span class="s1">fmt</span><span class="s2">=</span><span class="s3">&quot;.2f&quot;</span><span class="s2">, </span><span class="s1">linewidths</span><span class="s2">=</span><span class="s5">.5</span><span class="s2">)</span>
+<span class="s1">plt</span><span class="s2">.</span><span class="s1">title</span><span class="s2">(</span><span class="s3">&quot;Correlation of Variables with Amount Collected by Client Type&quot;</span><span class="s2">)</span>
+<span class="s1">plt</span><span class="s2">.</span><span class="s1">show</span><span class="s2">( </span><span class="s1">block </span><span class="s2">= </span><span class="s0">False</span><span class="s2">)</span>
+<span class="s4"># to open Heatmap remove block = false</span>
+
+
+<span class="s0">import </span><span class="s1">statsmodels</span><span class="s2">.</span><span class="s1">api </span><span class="s0">as </span><span class="s1">sm</span>
+<span class="s0">import </span><span class="s1">statsmodels</span><span class="s2">.</span><span class="s1">formula</span><span class="s2">.</span><span class="s1">api </span><span class="s0">as </span><span class="s1">smf</span>
+<span class="s1">data</span><span class="s2">.</span><span class="s1">columns </span><span class="s2">= [</span><span class="s1">mystring</span><span class="s2">.</span><span class="s1">replace</span><span class="s2">(</span><span class="s3">&quot; &quot;</span><span class="s2">, </span><span class="s3">&quot;_&quot;</span><span class="s2">) </span><span class="s0">for </span><span class="s1">mystring </span><span class="s0">in </span><span class="s1">data</span><span class="s2">.</span><span class="s1">columns</span><span class="s2">]</span>
+<span class="s1">data</span><span class="s2">.</span><span class="s1">columns </span><span class="s2">= [</span><span class="s1">mystring</span><span class="s2">.</span><span class="s1">replace</span><span class="s2">(</span><span class="s3">&quot;(&quot;</span><span class="s2">, </span><span class="s3">&quot;&quot;</span><span class="s2">) </span><span class="s0">for </span><span class="s1">mystring </span><span class="s0">in </span><span class="s1">data</span><span class="s2">.</span><span class="s1">columns</span><span class="s2">]</span>
+<span class="s1">data</span><span class="s2">.</span><span class="s1">columns </span><span class="s2">= [</span><span class="s1">mystring</span><span class="s2">.</span><span class="s1">replace</span><span class="s2">(</span><span class="s3">&quot;)&quot;</span><span class="s2">, </span><span class="s3">&quot;&quot;</span><span class="s2">) </span><span class="s0">for </span><span class="s1">mystring </span><span class="s0">in </span><span class="s1">data</span><span class="s2">.</span><span class="s1">columns</span><span class="s2">]</span>
+<span class="s1">results </span><span class="s2">= </span><span class="s1">smf</span><span class="s2">.</span><span class="s1">ols</span><span class="s2">(</span><span class="s3">'Amount_Collected ~ Campaign_Email+Campaign_Flyer+Campaign_Phone+</span><span class="s0">\ 
+       </span><span class="s3">Sales_Contact_1 + Sales_Contact_2 + Sales_Contact_3+Sales_Contact_4 + Sales_Contact_5'</span><span class="s2">,</span><span class="s1">data</span><span class="s2">=</span><span class="s1">data</span><span class="s2">).</span><span class="s1">fit</span><span class="s2">()</span>
+<span class="s1">print</span><span class="s2">(</span><span class="s1">results</span><span class="s2">.</span><span class="s1">summary</span><span class="s2">())</span>
+<span class="s1">print</span><span class="s2">( </span><span class="s3">'print results here'</span><span class="s2">)</span>
+<span class="s4"># we want to now filter our finding. Our P-value needs to be less than .05 to have a 95% confidence level.</span>
+<span class="s4"># after looking at the regression results campaign_phone has a p-value of 94%.</span>
+
+
+<span class="s0">from </span><span class="s1">io </span><span class="s0">import </span><span class="s1">StringIO</span>
+
+<span class="s4"># Initialize an empty DataFrame</span>
+<span class="s1">consolidated_summary </span><span class="s2">= </span><span class="s1">pd</span><span class="s2">.</span><span class="s1">DataFrame</span><span class="s2">()</span>
+
+<span class="s4"># Loop through each unique account type</span>
+<span class="s0">for </span><span class="s1">acctype </span><span class="s0">in </span><span class="s1">set</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s3">'Client_Type'</span><span class="s2">]):</span>
+    <span class="s1">temp_data </span><span class="s2">= </span><span class="s1">data</span><span class="s2">[</span><span class="s1">data</span><span class="s2">[</span><span class="s3">'Client_Type'</span><span class="s2">] == </span><span class="s1">acctype</span><span class="s2">].</span><span class="s1">copy</span><span class="s2">()</span>
+
+    <span class="s4"># Fit the regression model</span>
+    <span class="s1">results </span><span class="s2">= </span><span class="s1">smf</span><span class="s2">.</span><span class="s1">ols</span><span class="s2">(</span>
+        <span class="s3">'Amount_Collected ~ Campaign_Email + Campaign_Flyer + Campaign_Phone + Sales_Contact_1 + Sales_Contact_2 + Sales_Contact_3 + Sales_Contact_4 + Sales_Contact_5'</span><span class="s2">,</span>
+        <span class="s1">data</span><span class="s2">=</span><span class="s1">temp_data</span>
+    <span class="s2">).</span><span class="s1">fit</span><span class="s2">()</span>
+
+    <span class="s4"># Wrap HTML summary in StringIO for read_html</span>
+    <span class="s1">html_content </span><span class="s2">= </span><span class="s1">StringIO</span><span class="s2">(</span><span class="s1">results</span><span class="s2">.</span><span class="s1">summary</span><span class="s2">().</span><span class="s1">tables</span><span class="s2">[</span><span class="s5">1</span><span class="s2">].</span><span class="s1">as_html</span><span class="s2">())</span>
+    <span class="s1">df </span><span class="s2">= </span><span class="s1">pd</span><span class="s2">.</span><span class="s1">read_html</span><span class="s2">(</span><span class="s1">html_content</span><span class="s2">, </span><span class="s1">header</span><span class="s2">=</span><span class="s5">0</span><span class="s2">, </span><span class="s1">index_col</span><span class="s2">=</span><span class="s5">0</span><span class="s2">)[</span><span class="s5">0</span><span class="s2">].</span><span class="s1">reset_index</span><span class="s2">()</span>
+
+    <span class="s4"># Filter significant results</span>
+    <span class="s1">df </span><span class="s2">= </span><span class="s1">df</span><span class="s2">[</span><span class="s1">df</span><span class="s2">[</span><span class="s3">'P&gt;|t|'</span><span class="s2">] &lt; </span><span class="s5">0.05</span><span class="s2">][[</span><span class="s3">'index'</span><span class="s2">, </span><span class="s3">'coef'</span><span class="s2">]]</span>
+    <span class="s1">df</span><span class="s2">.</span><span class="s1">columns </span><span class="s2">= [</span><span class="s3">'Variable'</span><span class="s2">, </span><span class="s3">'Coefficient (Impact)'</span><span class="s2">]</span>
+    <span class="s1">df</span><span class="s2">[</span><span class="s3">'Account Type'</span><span class="s2">] = </span><span class="s1">acctype</span>
+
+    <span class="s4"># Sort and filter out 'Intercept'</span>
+    <span class="s1">df </span><span class="s2">= </span><span class="s1">df</span><span class="s2">.</span><span class="s1">sort_values</span><span class="s2">(</span><span class="s3">'Coefficient (Impact)'</span><span class="s2">, </span><span class="s1">ascending</span><span class="s2">=</span><span class="s0">False</span><span class="s2">)</span>
+    <span class="s1">df </span><span class="s2">= </span><span class="s1">df</span><span class="s2">[</span><span class="s1">df</span><span class="s2">[</span><span class="s3">'Variable'</span><span class="s2">] != </span><span class="s3">'Intercept'</span><span class="s2">]</span>
+
+    <span class="s4"># Append to the consolidated DataFrame using concat</span>
+    <span class="s1">consolidated_summary </span><span class="s2">= </span><span class="s1">pd</span><span class="s2">.</span><span class="s1">concat</span><span class="s2">([</span><span class="s1">consolidated_summary</span><span class="s2">, </span><span class="s1">df</span><span class="s2">], </span><span class="s1">ignore_index</span><span class="s2">=</span><span class="s0">True</span><span class="s2">)</span>
+
+    <span class="s4"># Print results for each account type</span>
+    <span class="s1">print</span><span class="s2">(</span><span class="s1">acctype</span><span class="s2">)</span>
+    <span class="s1">print</span><span class="s2">(</span><span class="s1">df</span><span class="s2">)</span>
+
+
+<span class="s1">print</span><span class="s2">(</span><span class="s3">'For private facility sale contact 2 ($6.6) has the highest impact on amount collect. For medium facility campaign_flyer is '</span>
+          <span class="s3">'the most effective marketing tactic ($4.1). When we look at Large facility we see that when using sales contact 1'</span>
+          <span class="s3">' we would expect an increase of $11.67 '</span><span class="s2">)</span>
+</pre>
+</body>
+</html>
